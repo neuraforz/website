@@ -1,0 +1,243 @@
+// Prisma Schema for Digitect Solutions Website
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// Enums
+enum Status {
+  draft
+  published
+}
+
+enum LeadSource {
+  contact_form
+  chat
+  phone
+  email
+  referral
+}
+
+// Services Table
+model Service {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  excerpt     String   @db.Text
+  bodyMd      String   @map("body_md") @db.Text
+  iconUrl     String?  @map("icon_url")
+  orderIndex  Int      @default(0) @map("order_index")
+  status      Status   @default(published)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  industries  ServiceIndustry[]
+  faqs        ServiceFaq[]
+  cases       CaseStudy[]
+  
+  @@map("service")
+}
+
+// Industries Table
+model Industry {
+  id            String   @id @default(uuid())
+  slug          String   @unique
+  name          String
+  descriptionMd String   @map("description_md") @db.Text
+  iconUrl       String?  @map("icon_url")
+  heroImgUrl    String?  @map("hero_img_url")
+  orderIndex    Int      @default(0) @map("order_index")
+  status        Status   @default(published)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  services      ServiceIndustry[]
+  cases         CaseStudy[]
+  
+  @@map("industry")
+}
+
+// Service-Industry Junction Table
+model ServiceIndustry {
+  serviceId  String @map("service_id")
+  industryId String @map("industry_id")
+  
+  service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  industry   Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  
+  @@id([serviceId, industryId])
+  @@map("service_industry")
+}
+
+// Service FAQs
+model ServiceFaq {
+  id         String   @id @default(uuid())
+  serviceId  String   @map("service_id")
+  question   String   @db.Text
+  answer     String   @db.Text
+  orderIndex Int      @default(0) @map("order_index")
+  createdAt  DateTime @default(now()) @map("created_at")
+  
+  service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  
+  @@map("service_faq")
+}
+
+// Case Studies Table
+model CaseStudy {
+  id            String   @id @default(uuid())
+  slug          String   @unique
+  title         String
+  client        String
+  serviceId     String   @map("service_id")
+  industryId    String   @map("industry_id")
+  problem       String   @db.Text
+  approach      String   @db.Text
+  resultsMd     String   @map("results_md") @db.Text
+  imageUrl      String?  @map("image_url")
+  testimonial   String?  @db.Text
+  authorName    String?  @map("author_name")
+  authorRole    String?  @map("author_role")
+  orderIndex    Int      @default(0) @map("order_index")
+  status        Status   @default(published)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  service       Service  @relation(fields: [serviceId], references: [id])
+  industry      Industry @relation(fields: [industryId], references: [id])
+  metrics       CaseMetric[]
+  
+  @@map("case_study")
+}
+
+// Case Study Metrics
+model CaseMetric {
+  id          String   @id @default(uuid())
+  caseId      String   @map("case_id")
+  label       String
+  value       String
+  orderIndex  Int      @default(0) @map("order_index")
+  
+  caseStudy   CaseStudy @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  
+  @@map("case_metric")
+}
+
+// Blog Posts Table
+model BlogPost {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  excerpt     String   @db.Text
+  contentMd   String   @map("content_md") @db.Text
+  author      String
+  coverImage  String?  @map("cover_image")
+  readingTime Int      @default(5) @map("reading_time")
+  status      Status   @default(published)
+  publishedAt DateTime @default(now()) @map("published_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  tags        BlogTag[]
+  
+  @@map("blog_post")
+}
+
+// Blog Tags
+model Tag {
+  id    String    @id @default(uuid())
+  name  String    @unique
+  slug  String    @unique
+  
+  posts BlogTag[]
+  
+  @@map("tag")
+}
+
+// Blog-Tag Junction Table
+model BlogTag {
+  postId String @map("post_id")
+  tagId  String @map("tag_id")
+  
+  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@id([postId, tagId])
+  @@map("blog_tag")
+}
+
+// Testimonials Table
+model Testimonial {
+  id          String   @id @default(uuid())
+  quote       String   @db.Text
+  authorName  String   @map("author_name")
+  authorRole  String   @map("author_role")
+  company     String
+  avatarUrl   String?  @map("avatar_url")
+  rating      Int      @default(5)
+  orderIndex  Int      @default(0) @map("order_index")
+  status      Status   @default(published)
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  @@map("testimonial")
+}
+
+// Client Logos Table
+model ClientLogo {
+  id         String   @id @default(uuid())
+  name       String
+  logoUrl    String   @map("logo_url")
+  website    String?
+  orderIndex Int      @default(0) @map("order_index")
+  status     Status   @default(published)
+  createdAt  DateTime @default(now()) @map("created_at")
+  
+  @@map("client_logo")
+}
+
+// Leads Table
+model Lead {
+  id              String     @id @default(uuid())
+  firstName       String     @map("first_name")
+  lastName        String     @map("last_name")
+  email           String
+  phone           String?
+  company         String?
+  message         String     @db.Text
+  source          LeadSource @default(contact_form)
+  utmSource       String?    @map("utm_source")
+  utmMedium       String?    @map("utm_medium")
+  utmCampaign     String?    @map("utm_campaign")
+  ipAddress       String?    @map("ip_address")
+  userAgent       String?    @map("user_agent")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  
+  @@map("lead")
+  @@index([email])
+  @@index([createdAt])
+}
+
+// Team Members Table
+model TeamMember {
+  id          String   @id @default(uuid())
+  name        String
+  role        String
+  bio         String?  @db.Text
+  avatarUrl   String?  @map("avatar_url")
+  linkedinUrl String?  @map("linkedin_url")
+  orderIndex  Int      @default(0) @map("order_index")
+  status      Status   @default(published)
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  @@map("team_member")
+}

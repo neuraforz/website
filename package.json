@@ -1,0 +1,51 @@
+{
+  "name": "digitect-solutions-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "revert-to-v1": "copy components\\premium-hero.v1.tsx components\\premium-hero.tsx && copy app\\page.v1.tsx app\\page.tsx && echo Reverted to V1! Run npm run dev to see changes.",
+    "build:static": "copy next.config.static.mjs next.config.mjs && copy app\\page.static.tsx app\\page.tsx && npm run build && echo Static build complete! Files are in the 'out' folder.",
+    "deploy:prepare": "npm run build:static && echo Deployment files ready in 'out' folder. Upload to Hostinger public_html directory."
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@prisma/client": "^5.20.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.18.2",
+    "lucide-react": "^0.454.0",
+    "next": "14.2.33",
+    "next-themes": "^0.3.0",
+    "react": "^18.3.1",
+    "react-countup": "^6.5.3",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "react-player": "^3.3.3",
+    "recharts": "^3.4.1",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.33",
+    "postcss": "^8.4.47",
+    "prisma": "^5.20.0",
+    "tailwindcss": "^3.4.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  }
+}
