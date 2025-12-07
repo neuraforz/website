@@ -54,7 +54,7 @@ function getModelName(): string {
     case "openai":
       return "gpt-3.5-turbo";
     case "groq":
-      return "llama-3.1-70b-versatile"; // Groq's free model
+      return "llama-3.3-70b-versatile"; // Groq's current free model (updated from 3.1)
     case "claude":
     case "anthropic":
       return "claude-3-haiku-20240307"; // Claude's fast model
