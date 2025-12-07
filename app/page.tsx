@@ -8,6 +8,7 @@ import { InlineBookingForm } from "@/components/inline-booking-form";
 import { AIWorkflowInfographic } from "@/components/ai-workflow-infographic";
 import { ProcessInfographic } from "@/components/process-infographic";
 import { TechStackVisual } from "@/components/tech-stack-visual";
+import { TechnologyPartners } from "@/components/technology-partners";
 import { CTASection } from "@/components/cta-section";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -126,6 +127,9 @@ export default function Home() {
 
       {/* Technologies We Master - Show Expertise */}
       <TechStackVisual />
+
+      {/* Technology Partners - Enterprise Platforms */}
+      <TechnologyPartners />
 
       {/* Final CTA Section - Reinforcement */}
       <CTASection />
