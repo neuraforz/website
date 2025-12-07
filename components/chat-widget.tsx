@@ -158,7 +158,7 @@ export function ChatWidget() {
               <div className="flex-1">
                 <h3 className="font-semibold text-lg">Neuraforz AI Assistant</h3>
                 <p className="text-xs text-white/80">
-                  Powered by GPT-3.5 • Always here to help
+                  Always here to help • 24/7
                 </p>
               </div>
               <button
