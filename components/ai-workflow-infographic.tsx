@@ -149,33 +149,26 @@ export function AIWorkflowInfographic() {
               
               {/* Animated particles along the path */}
               {[...Array(5)].map((_, i) => (
-                <motion.circle
+                <circle
                   key={i}
                   r="4"
                   fill="#06B6D4"
-                  initial={{ offsetDistance: "0%", opacity: 0 }}
-                  animate={{
-                    offsetDistance: "100%",
-                    opacity: [0, 1, 1, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    delay: i * 0.6,
-                    ease: "linear",
-                  }}
-                  style={{
-                    offsetPath: "path('M 12.5% 50 Q 25% 20, 37.5% 50 T 62.5% 50 T 87.5% 50')",
-                  }}
+                  opacity="0"
                 >
                   <animateMotion
                     dur="3s"
                     repeatCount="indefinite"
                     begin={`${i * 0.6}s`}
-                  >
-                    <mpath href="#flowPath" />
-                  </animateMotion>
-                </motion.circle>
+                    path="M 12.5% 50 Q 25% 20, 37.5% 50 T 62.5% 50 T 87.5% 50"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0;1;1;0"
+                    dur="3s"
+                    repeatCount="indefinite"
+                    begin={`${i * 0.6}s`}
+                  />
+                </circle>
               ))}
             </svg>
 
