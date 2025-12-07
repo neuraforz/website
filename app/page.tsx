@@ -97,8 +97,8 @@ export default function Home() {
       {/* Enhanced Hero - Single CTA, Message Match Enabled */}
       <PremiumHeroV2 />
 
-      {/* Client Logos - Social Proof Early */}
-      <ClientLogos />
+      {/* Client Logos - HIDDEN until real client logos available */}
+      {/* <ClientLogos /> */}
 
       {/* Product Demo - Interactive "How It Works" */}
       <ProductDemo />
